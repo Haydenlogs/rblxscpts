@@ -1,10 +1,1 @@
-print("Loading Emote Menu")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/emote"))()
-print("Loading Infinite Yield")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/iy"))()
-print("Loading Vertex")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/mm2"))()
-wait(0.5)
-print("Successfully Loaded Vertex")
-print("Successfully Loaded IY")
-print("Successfully Loaded EMOTE")
+local t={"https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/emote","https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/iy","https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/mm2"};local m={"Loading Emote Menu","Loading Infinite Yield","Loading Vertex","Successfully Loaded Vertex","Successfully Loaded IY","Successfully Loaded EMOTE"};for i=1,3 do print(m[i])loadstring(game:HttpGet(t[i]))()end task.wait(.5)for i=4,6 do print(m[i])end
