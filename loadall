@@ -1,0 +1,3 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/emote"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/iy"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Haydenlogs/rblxscpts/refs/heads/main/mm2"))()
