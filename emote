@@ -1,0 +1,497 @@
+if _G.EmoteScriptLoaded then
+	script:Destroy()
+	return
+end
+
+_G.EmoteScriptLoaded = true
+
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+
+local player = Players.LocalPlayer
+
+local loopingTrack
+local runningConnection
+
+
+--------------------------------------------------
+-- EMOTE DATA
+--------------------------------------------------
+
+local Emotes = {
+	{Id="rbxassetid://97054013647717", Loop=false},
+	{Id="rbxassetid://76580366945676", Loop=false},
+	{Id="rbxassetid://124287251935400", Loop=false},
+	{Id="rbxassetid://111281033685433", Loop=false},
+
+	{Id="rbxassetid://110855869390004", Loop=true},
+	{Id="rbxassetid://120615013035083", Loop=true},
+	{Id="rbxassetid://134979439704255", Loop=true},
+	{Id="rbxassetid://125261778212411", Loop=true},
+	{Id="rbxassetid://140435143190786", Loop=true},
+
+	{Id="rbxassetid://111177309601504", Loop=true},
+	{Id="rbxassetid://76554449514090", Loop=true},
+	{Id="rbxassetid://128834802602240", Loop=true},
+	{Id="rbxassetid://118343267142519", Loop=true},
+
+	{Id="rbxassetid://103985984810521", Loop=true},
+	{Id="rbxassetid://77196912859360", Loop=true},
+	{Id="rbxassetid://81292195847151", Loop=true},
+	{Id="rbxassetid://94394460467040", Loop=true},
+	{Id="rbxassetid://86806707642727", Loop=true},
+	{Id="rbxassetid://116819742540173", Loop=true},
+	{Id="rbxassetid://83120719497142", Loop=true},
+	{Id="rbxassetid://115951523870527", Loop=false},
+	{Id="rbxassetid://83792773141651", Loop=true},
+	{Id="rbxassetid://115361275941163", Loop=true},
+	{Id="rbxassetid://134459607456762", Loop=true},
+	{Id="rbxassetid://122599479076921", Loop=true},
+	{Id="rbxassetid://79360865161589", Loop=true},
+	{Id="rbxassetid://106865236633450", Loop=true},
+	{Id="rbxassetid://129764254213842", Loop=true},
+	{Id="rbxassetid://126035888065434", Loop=true},
+	{Id="rbxassetid://107391381161921", Loop=true}
+}
+
+
+--------------------------------------------------
+-- ROBLOX ECONOMY API LOOKUP
+--------------------------------------------------
+
+local function getAssetInfo(id)
+
+	local info = {
+		Name = "Unknown Animation",
+		Creator = "Unknown Creator"
+	}
+
+	local success,response = pcall(function()
+
+		return game:HttpGet(
+			"https://economy.roblox.com/v2/assets/"
+			..id..
+			"/details"
+		)
+
+	end)
+
+
+	if success then
+
+		local data =
+			HttpService:JSONDecode(response)
+
+
+		info.Name =
+			data.Name or info.Name
+
+		print(info.Name.." successfully loaded ("..id..")")
+		if data.Creator then
+			info.Creator =
+				data.Creator.Name or info.Creator
+		end
+
+	end
+
+	return info
+end
+
+
+local AssetInfo = {}
+
+
+for _,emote in ipairs(Emotes) do
+
+	local id =
+		tonumber(emote.Id:match("%d+"))
+
+	AssetInfo[id] =
+		getAssetInfo(id)
+
+end
+
+
+--------------------------------------------------
+-- STOP EMOTES
+--------------------------------------------------
+
+local function stopAllEmotes()
+
+	if loopingTrack then
+		loopingTrack:Stop()
+		loopingTrack=nil
+	end
+
+
+	if runningConnection then
+		runningConnection:Disconnect()
+		runningConnection=nil
+	end
+
+
+	local character =
+		player.Character
+
+
+	if character then
+
+		local humanoid =
+			character:FindFirstChild("Humanoid")
+
+
+		if humanoid then
+
+			local animator =
+				humanoid:FindFirstChild("Animator")
+
+
+			if animator then
+
+				for _,track in pairs(
+					animator:GetPlayingAnimationTracks()
+				) do
+					track:Stop()
+				end
+
+			end
+		end
+	end
+end
+
+
+--------------------------------------------------
+-- PLAY ANIMATION
+--------------------------------------------------
+
+local function playAnimation(data)
+
+	local character =
+		player.Character
+		or player.CharacterAdded:Wait()
+
+
+	local humanoid =
+		character:WaitForChild("Humanoid")
+
+
+	local animator =
+		humanoid:WaitForChild("Animator")
+
+
+	stopAllEmotes()
+
+
+	local animation =
+		Instance.new("Animation")
+
+
+	animation.AnimationId =
+		data.Id
+
+
+	local track =
+		animator:LoadAnimation(animation)
+
+
+	track.Priority =
+		Enum.AnimationPriority.Action
+
+
+	track.Looped =
+		data.Loop
+
+
+	track:Play()
+
+
+	if data.Loop then
+
+		loopingTrack =
+			track
+
+
+		runningConnection =
+			humanoid.Running:Connect(function(speed)
+
+				if speed > 0 then
+					stopAllEmotes()
+				end
+
+			end)
+
+	end
+end
+
+
+--------------------------------------------------
+-- UI
+--------------------------------------------------
+
+local gui =
+	Instance.new("ScreenGui")
+
+gui.Name =
+	"EmoteUI"
+
+gui.ResetOnSpawn =
+	false
+
+gui.Parent =
+	player.PlayerGui
+
+
+
+local frame =
+	Instance.new("Frame")
+
+frame.Parent =
+	gui
+
+frame.Size =
+	UDim2.new(0,350,0,620)
+
+frame.Position =
+	UDim2.new(0,25,0.5,-310)
+
+frame.BackgroundColor3 =
+	Color3.fromRGB(20,20,20)
+
+frame.BorderSizePixel =
+	0
+
+
+
+local corner =
+	Instance.new("UICorner")
+
+corner.Parent =
+	frame
+
+corner.CornerRadius =
+	UDim.new(0,16)
+
+
+
+local drag =
+	Instance.new("UIDragDetector")
+
+drag.Parent =
+	frame
+
+
+
+local title =
+	Instance.new("TextLabel")
+
+title.Parent =
+	frame
+
+title.Size =
+	UDim2.new(1,0,0,50)
+
+title.BackgroundTransparency =
+	1
+
+title.Text =
+	"🎭 Emote Menu"
+
+title.Font =
+	Enum.Font.GothamBold
+
+title.TextSize =
+	25
+
+title.TextColor3 =
+	Color3.fromRGB(255,255,255)
+
+
+
+local stop =
+	Instance.new("TextButton")
+
+stop.Parent =
+	frame
+
+stop.Size =
+	UDim2.new(1,-20,0,40)
+
+stop.Position =
+	UDim2.new(0,10,0,55)
+
+stop.Text =
+	"⛔ Stop All Emotes"
+
+stop.Font =
+	Enum.Font.GothamBold
+
+stop.TextSize =
+	16
+
+stop.TextColor3 =
+	Color3.new(1,1,1)
+
+stop.BackgroundColor3 =
+	Color3.fromRGB(160,50,50)
+
+
+
+local stopCorner =
+	Instance.new("UICorner")
+
+stopCorner.Parent =
+	stop
+
+
+stop.MouseButton1Click:Connect(function()
+	stopAllEmotes()
+end)
+
+
+
+local scroll =
+	Instance.new("ScrollingFrame")
+
+scroll.Parent =
+	frame
+
+scroll.Position =
+	UDim2.new(0,10,0,105)
+
+scroll.Size =
+	UDim2.new(1,-20,1,-115)
+
+scroll.BackgroundTransparency =
+	1
+
+scroll.AutomaticCanvasSize =
+	Enum.AutomaticSize.Y
+
+
+
+local layout =
+	Instance.new("UIListLayout")
+
+layout.Parent =
+	scroll
+
+layout.Padding =
+	UDim.new(0,8)
+
+
+
+--------------------------------------------------
+-- CREATE BUTTON CARDS
+--------------------------------------------------
+
+for index,emote in ipairs(Emotes) do
+
+	local id =
+		tonumber(emote.Id:match("%d+"))
+
+
+	local info =
+		AssetInfo[id]
+
+
+	local button =
+		Instance.new("TextButton")
+
+
+	button.Parent =
+		scroll
+
+	button.Size =
+		UDim2.new(1,0,0,70)
+
+	button.BackgroundColor3 =
+		Color3.fromRGB(40,40,40)
+
+	button.Text =
+		""
+
+
+	local bc =
+		Instance.new("UICorner")
+
+	bc.Parent =
+		button
+
+	bc.CornerRadius =
+		UDim.new(0,12)
+
+
+
+	local label =
+		Instance.new("TextLabel")
+
+
+	label.Parent =
+		button
+
+	label.Position =
+		UDim2.new(0,15,0,8)
+
+	label.Size =
+		UDim2.new(1,-30,0,28)
+
+	label.BackgroundTransparency =
+		1
+
+	label.Text =
+		index.." | "..info.Name
+
+	label.TextXAlignment =
+		Enum.TextXAlignment.Left
+
+	label.Font =
+		Enum.Font.GothamBold
+
+	label.TextSize =
+		17
+
+	label.TextColor3 =
+		Color3.new(1,1,1)
+
+
+
+	local creator =
+		Instance.new("TextLabel")
+
+
+	creator.Parent =
+		button
+
+	creator.Position =
+		UDim2.new(0,15,0,38)
+
+	creator.Size =
+		UDim2.new(1,-30,0,20)
+
+	creator.BackgroundTransparency =
+		1
+
+	creator.Text =
+		"by: "..info.Creator
+
+	creator.TextXAlignment =
+		Enum.TextXAlignment.Left
+
+	creator.Font =
+		Enum.Font.Gotham
+
+	creator.TextSize =
+		13
+
+	creator.TextColor3 =
+		Color3.fromRGB(170,170,170)
+
+
+
+	button.MouseButton1Click:Connect(function()
+
+		playAnimation(emote)
+
+	end)
+
+end
