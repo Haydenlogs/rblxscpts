@@ -23,18 +23,15 @@ local Emotes = {
 	{Id="rbxassetid://76580366945676", Loop=false},
 	{Id="rbxassetid://124287251935400", Loop=false},
 	{Id="rbxassetid://111281033685433", Loop=false},
-
 	{Id="rbxassetid://110855869390004", Loop=true},
 	{Id="rbxassetid://120615013035083", Loop=true},
 	{Id="rbxassetid://93062298566806", Loop=true},
 	{Id="rbxassetid://71292563614996", Loop=true},
 	{Id="rbxassetid://140435143190786", Loop=true},
-
 	{Id="rbxassetid://111177309601504", Loop=true},
 	{Id="rbxassetid://76554449514090", Loop=true},
 	{Id="rbxassetid://128834802602240", Loop=true},
 	{Id="rbxassetid://118343267142519", Loop=true},
-
 	{Id="rbxassetid://103985984810521", Loop=true},
 	{Id="rbxassetid://77196912859360", Loop=true},
 	{Id="rbxassetid://81292195847151", Loop=true},
@@ -54,7 +51,16 @@ local Emotes = {
 	{Id="rbxassetid://107391381161921", Loop=true},
 	{Id="rbxassetid://120195718670937", Loop=true},
 	{Id="rbxassetid://98114214433923", Loop=true},
-	{Id="rbxassetid://124343331646008", Loop=true}
+	{Id="rbxassetid://124343331646008", Loop=true},
+	{Id="rbxassetid://111973105266097", Loop=true},
+	{Id="rbxassetid://132938982985482", Loop=true},
+	{Id="rbxassetid://99558490932154", Loop=true},
+	{Id="rbxassetid://90802740360125", Loop=true},
+	{Id="rbxassetid://134048087973127", Loop=true},
+	{Id="rbxassetid://119096405600200", Loop=true},
+	{Id="rbxassetid://115118941380293", Loop=true},
+	{Id="rbxassetid://130653611098493", Loop=true},
+	{Id="rbxassetid://106576106721624", Loop=true}
 }
 
 
