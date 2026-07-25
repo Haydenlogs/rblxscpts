@@ -26,8 +26,8 @@ local Emotes = {
 
 	{Id="rbxassetid://110855869390004", Loop=true},
 	{Id="rbxassetid://120615013035083", Loop=true},
-	{Id="rbxassetid://134979439704255", Loop=true},
-	{Id="rbxassetid://125261778212411", Loop=true},
+	{Id="rbxassetid://93062298566806", Loop=true},
+	{Id="rbxassetid://71292563614996", Loop=true},
 	{Id="rbxassetid://140435143190786", Loop=true},
 
 	{Id="rbxassetid://111177309601504", Loop=true},
@@ -51,7 +51,10 @@ local Emotes = {
 	{Id="rbxassetid://106865236633450", Loop=true},
 	{Id="rbxassetid://129764254213842", Loop=true},
 	{Id="rbxassetid://126035888065434", Loop=true},
-	{Id="rbxassetid://107391381161921", Loop=true}
+	{Id="rbxassetid://107391381161921", Loop=true},
+	{Id="rbxassetid://120195718670937", Loop=true},
+	{Id="rbxassetid://98114214433923", Loop=true},
+	{Id="rbxassetid://124343331646008", Loop=true}
 }
 
 
